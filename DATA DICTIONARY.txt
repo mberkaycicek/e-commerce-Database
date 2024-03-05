@@ -1,0 +1,115 @@
+DATA DICTIONARY
+
+1. TaxRate Table:
+
+   - taxRate_ID: SMALLINT, PRIMARY KEY, Unique, Identifier for the tax rate.
+   - district: NVARCHAR(85), Not Null, Name of the district associated with the tax rate.
+   - taxRate2: DECIMAL(3,2), Not Null, The actual tax rate.
+
+2. Bills Table
+
+   - billNumber: INT, PRIMARY KEY, Unique, Identifier for the bill.
+   - taxRate_ID: SMALLINT, FOREIGN KEY (TaxRate), Identifier for the associated tax rate.
+   - billDate: SMALLDATETIME, Not Null, Date of the bill.
+   - totalPaymentAmount: DECIMAL(10,2), Not Null, Total payment amount on the bill.
+   - ID_Number: VARCHAR(11), Not Null, Identifier associated with the bill.
+   
+3. Shipping Table:
+   - shipping_ID: INT, PRIMARY KEY, Unique, Identifier for the shipping.
+   - address: NVARCHAR(255), Not Null, Shipping address.
+   - shippingMethod: VARCHAR(25), Not Null, Shipping method.
+   - shipperCompany: VARCHAR(50), Not Null, Name of the shipping company.
+   - shipDate: SMALLDATETIME, Not Null, Date of shipping.
+
+4. Suppliers Table:
+
+   - supplier_ID: SMALLINT, PRIMARY KEY, Unique, Identifier for the supplier.
+   - companyName: NVARCHAR(100), Not Null, Name of the supplier company.
+   - cAdress: NVARCHAR(255), Not Null, Address of the supplier.
+   - country: NVARCHAR(56), Not Null, Country of the supplier.
+   - city: NVARCHAR(178), Not Null, City of the supplier.
+   - cEmail: VARCHAR(100), Not Null, Email of the supplier.
+   - phone: VARCHAR(20), Not Null, Phone number of the supplier.
+
+5. Coupons Table:
+
+   - couponCode: SMALLINT, PRIMARY KEY, Unique, Coupon code.
+   - expDate: SMALLDATETIME, Not Null, Expiry date of the coupon.
+   - startDate: SMALLDATETIME, Not Null, Start date of the coupon.
+   - couponAmount: DECIMAL(5,2), Amount associated with the coupon.
+   - discount_percent: TINYINT, Discount percentage associated with the coupon.
+
+
+
+
+
+
+
+
+
+6. Customers Table:
+
+   - Customer_ID: INT, PRIMARY KEY, Unique, Identifier for the customer.
+   - addreses: NVARCHAR(255), Customer's address.
+   - wishlist: TEXT, Customer's wishlist.
+   - firstName: VARCHAR(50), Not Null, Customer's first name.
+   - lastName: VARCHAR(50), Not Null, Customer's last name.
+   - phoneNumber: VARCHAR(20), Unique, Customer's phone number.
+   - email: VARCHAR(100), Not Null, Unique, Customer's email.
+   - NumberOfID: VARCHAR(11), Unique, Customer's ID number.
+   - dateOfBirth: DATE, Customer's date of birth.
+   - gender: CHAR(1), Check Constraint ('m' or 'f').
+
+7. Categories Table:
+
+   - category_ID: SMALLINT, PRIMARY KEY, Unique, Identifier for the category.
+   - categoryName: VARCHAR(30), Not Null, Name of the category.
+   - description: TEXT, Description of the category.
+   - cPicture: VARBINARY(MAX), Category picture.
+
+8. Returns Table:
+
+   - return_ID: INT, PRIMARY KEY, Unique, Identifier for the return.
+   - customer_ID: INT, FOREIGN KEY (Customers), Identifier for the customer associated with the return.
+   - returnDate: SMALLDATETIME, Not Null, Date of the return.
+   - returnStatus: VARCHAR(50), Not Null, Status of the return.
+   - qtyReturned: TINYINT, Not Null, Quantity returned.
+   - returnCondition: VARCHAR(100), Condition of the return.
+
+9. Products Table:
+
+   - product_ID: INT, PRIMARY KEY, Unique, Identifier for the product.
+   - category_ID: SMALLINT, FOREIGN KEY (Categories), Identifier for the category associated with the product.
+   - supplier_ID: SMALLINT, FOREIGN KEY (Suppliers), Identifier for the supplier associated with the product.
+   - productName: VARCHAR(50), Not Null, Name of the product.
+   - price: DECIMAL(10,2), Not Null, Price of the product.
+   - picture: VARBINARY(MAX), Picture of the product.
+   - color: VARCHAR(20), Color of the product.
+   - stockQty: SMALLINT, Not Null, Stock quantity of the product.
+   - description: VARCHAR(255), Description of the product.
+
+
+
+
+
+10. Orders Table:
+
+    - order_ID: INT, PRIMARY KEY, Unique, Identifier for the order.
+    - customer_ID: INT, FOREIGN KEY (Customers), Identifier for the customer associated with the order.
+    - orderDate: SMALLDATETIME, Not Null, Date of the order.
+    - adress: NVARCHAR(255), Not Null, Address associated with the order.
+    - shipping_ID: INT, FOREIGN KEY (Shipping), Identifier for the shipping associated with the order.
+    - product_ID: INT, FOREIGN KEY (Products), Identifier for the product associated with the order.
+    - orderStatus: VARCHAR(50), Not Null, Status of the order.
+    - completeDate: SMALLDATETIME, Date of order completion.
+    - lineTotal: DECIMAL(10,2), Not Null, Total amount for the order.
+
+11. Payments Table:
+
+    - payment_ID: INT, PRIMARY KEY, Unique, Identifier for the payment.
+    - order_ID: INT, FOREIGN KEY (Orders), Identifier for the order associated with the payment.
+    - couponsUsed: SMALLINT, FOREIGN KEY (Coupons), Coupon code used in the payment.
+    - paymentStatus: VARCHAR(50), Not Null, Status of the payment.
+    - paymentDate: DATETIME2, Not Null, Date of the payment.
+    - paymentType: VARCHAR(50), Not Null, Type of payment.
+
